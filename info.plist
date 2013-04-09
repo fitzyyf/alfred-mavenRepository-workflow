@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>io.github.searchmaven</string>
+	<key>connections</key>
+	<dict>
+		<key>863B2A89-6210-4F52-8155-262472C5ACBD</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>1EC57E82-6BD9-42C3-9AAB-FB078B09B8C8</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>mumu@yfyang</string>
+	<key>description</key>
+	<string>Search http://search.maven.org/ Maven Center Repository Component</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Maven Repository Search</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>1EC57E82-6BD9-42C3-9AAB-FB078B09B8C8</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>keyword</key>
+				<string>cmr</string>
+				<key>runningsubtext</key>
+				<string>Please Wait...</string>
+				<key>script</key>
+				<string>#!/usr/bin/python
+#_*_ coding:UTF-8 _*_
+# 
+# Copyright 2012-2013 by yfyang. All Rights Reserved.
+
+import json
+import urllib
+import urllib2
+
+import alfred
+
+
+theQuery = u'{query}'
+# theQuery = 'Spring'
+theQuery = urllib.quote_plus(theQuery)
+url = 'http://search.maven.org/solrsearch/select?q=%s&amp;rows=20&amp;wt=json' % theQuery
+
+request = urllib2.Request(url)
+req_open = urllib2.build_opener()
+conn = req_open.open(request)
+req_data = conn.read()
+
+data = json.loads(req_data)
+
+results = []
+
+response = data['response']
+
+for doc in response['docs']:
+	arg = doc['id']
+	group = doc['g']
+	artifact = doc['a']
+	version = doc['latestVersion']
+
+	zb = "%s:%s:%s" % (group, artifact, version)
+
+	item = alfred.Item({'uid': 1, 'arg': arg}, zb, arg)
+	results.append(item)
+
+xml = alfred.xml(results)
+alfred.write(xml)</string>
+				<key>subtext</key>
+				<string>Maven Search With groupId or ArfactId</string>
+				<key>title</key>
+				<string>Maven Search</string>
+				<key>type</key>
+				<integer>3</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>863B2A89-6210-4F52-8155-262472C5ACBD</string>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>1EC57E82-6BD9-42C3-9AAB-FB078B09B8C8</key>
+		<dict>
+			<key>ypos</key>
+			<real>90</real>
+		</dict>
+		<key>863B2A89-6210-4F52-8155-262472C5ACBD</key>
+		<dict>
+			<key>ypos</key>
+			<real>130</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>yfyang.github.io</string>
+</dict>
+</plist>
