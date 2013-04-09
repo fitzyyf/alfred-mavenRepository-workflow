@@ -32,7 +32,7 @@
 			<key>config</key>
 			<dict>
 				<key>autopaste</key>
-				<false/>
+				<true/>
 				<key>clipboardtext</key>
 				<string>{query}</string>
 			</dict>
@@ -89,7 +89,7 @@ for doc in response['docs']:
 
 	zb = "%s:%s:%s" % (group, artifact, version)
 
-	item = alfred.Item({'uid': 1, 'arg': arg}, zb, arg)
+	item = alfred.Item({'uid': 1, 'arg': zb}, zb, arg,('cmp.gif', {'type': 'gif'}))
 	results.append(item)
 
 xml = alfred.xml(results)
@@ -121,7 +121,7 @@ alfred.write(xml)</string>
 		<key>863B2A89-6210-4F52-8155-262472C5ACBD</key>
 		<dict>
 			<key>ypos</key>
-			<real>130</real>
+			<real>110</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>

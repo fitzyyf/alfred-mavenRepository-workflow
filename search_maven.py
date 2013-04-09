@@ -26,7 +26,7 @@ results = []
 
 response = data['response']
 
-for doc in response['response']:
+for doc in response['docs']:
 	arg = doc['id']
 	group = doc['g']
 	artifact = doc['a']
@@ -34,7 +34,7 @@ for doc in response['response']:
 
 	zb = "%s:%s:%s" % (group, artifact, version)
 
-	item = alfred.Item({'uid': 1, 'arg': arg}, group, zb)
+	item = alfred.Item({'uid': 1, 'arg': zb}, zb, arg,('cmp.gif', {'type': 'gif'}))
 	results.append(item)
 
 xml = alfred.xml(results)
